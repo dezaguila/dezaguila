@@ -265,6 +265,8 @@ section { padding: 72px 0 0; scroll-margin-top: 12px; }
 .sh h2 { font-size: clamp(28px, 3.6vw, 42px); letter-spacing: -.04em; margin: 0; font-weight: 800; }
 .sh p { margin: 0; color: var(--body); }
 
+.reel { padding: 0; aspect-ratio: 16 / 9; background: #16261e; }
+.reel video { display: block; width: 100%; height: 100%; object-fit: cover; }
 .case { cursor: pointer; display: flex; flex-direction: column; min-height: 240px; }
 .case:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
 .tag { align-self: flex-start; font-size: 12px; font-weight: 700; padding: 5px 10px; border-radius: 99px; background: var(--chip); color: var(--body); }
@@ -345,7 +347,7 @@ dialog[open] { animation: pop .35s cubic-bezier(.2,.8,.2,1); }
         <h1>Enterprise-grade software, <span>engineer-led</span> and <span>AI-assisted.</span></h1>
         <p>I'm a senior software engineer with 10+ years building business-critical Java systems at Accenture, IBM and Infor. I take on a small number of side projects, mainly on weekends, and I review and test everything myself before it reaches you.</p>
       </div>
-      <div class="row"><a class="btn cta" data-mail href="#contact">Tell me about your project →</a><a class="btn w" href="#work">See my work</a></div>
+      <div class="row"><a class="btn cta" data-mail href="#contact">Tell me about your project →</a><a class="btn w" href="#reel">▶ Watch the 30-sec intro</a></div>
     </div>
 
     <div class="t ai s7 r2 tb-12" id="ai" style="--d:.08s">
@@ -382,6 +384,18 @@ dialog[open] { animation: pop .35s cubic-bezier(.2,.8,.2,1); }
       <div><b class="no">Not a fit</b><ul><li>24/7 on-call support</li><li>Weekday-only deadlines</li><li>Full-time contracts</li><li>Conflicts with my day job</li></ul></div>
     </div></div>
   </div>
+
+  <section id="reel">
+    <div class="sh"><h2>Dez in 30 seconds</h2><p>A short intro to what I do, animated in code with Remotion.</p></div>
+    <div class="bento">
+      <div class="t reel s12">
+        <video id="reelVideo" poster="media/dez-commercial-poster.jpg" controls muted playsinline loop preload="metadata" aria-label="30-second animated intro to Dez Aguila's services">
+          <source src="media/dez-commercial.mp4" type="video/mp4; codecs=avc1.640028">
+          <source src="media/dez-commercial.webm" type="video/webm; codecs=vp9">
+        </video>
+      </div>
+    </div>
+  </section>
 
   <section id="work">
     <div class="sh"><h2>Problems I solve</h2><p>Typical situations I help with. Tap a card to see how I approach them.</p></div>
@@ -449,6 +463,13 @@ dialog[open] { animation: pop .35s cubic-bezier(.2,.8,.2,1); }
     catch { toast.textContent = email; }
     toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 1800);
   });
+
+  const reel = document.getElementById('reelVideo');
+  if (!reduce && 'IntersectionObserver' in window) {
+    new IntersectionObserver(es => es.forEach(e => {
+      if (e.isIntersecting) reel.play().catch(() => {}); else reel.pause();
+    }), { threshold: .5 }).observe(reel);
+  }
 
   document.querySelectorAll('.marq .tr').forEach(t => t.innerHTML += t.innerHTML);
 

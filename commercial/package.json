@@ -1,0 +1,23 @@
+{
+  "name": "dez-commercial",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Product-style commercial for Dez Aguila's portfolio, built with Remotion",
+  "scripts": {
+    "studio": "remotion studio",
+    "render": "remotion render DezCommercial out/dez-commercial-raw.mp4 --crf=20 && npm run finish",
+    "render:vertical": "remotion render DezCommercialVertical out/dez-commercial-vertical.mp4 --crf=20",
+    "poster": "remotion still DezCommercial ../docs/media/dez-commercial-poster.jpg --frame=190 --image-format=jpeg",
+    "finish": "ffmpeg -y -loglevel error -i out/dez-commercial-raw.mp4 -c:v libx264 -crf 22 -preset slow -pix_fmt yuv420p -color_range tv -movflags +faststart -an ../docs/media/dez-commercial.mp4 && ffmpeg -y -loglevel error -i out/dez-commercial-raw.mp4 -c:v libvpx-vp9 -b:v 0 -crf 36 -row-mt 1 -deadline good -cpu-used 2 -pix_fmt yuv420p -an ../docs/media/dez-commercial.webm"
+  },
+  "dependencies": {
+    "@remotion/cli": "^4.0.532",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "remotion": "^4.0.532"
+  },
+  "devDependencies": {
+    "@types/react": "^19.3.0",
+    "typescript": "^7.0.2"
+  }
+}
