@@ -7,6 +7,7 @@
 <meta name="description" content="Dez (David Son Aguila): senior software engineer with 10+ years of enterprise Java experience, available for weekend side projects. Engineer-led, AI-assisted delivery.">
 <meta name="theme-color" content="#f3f6f2">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='18' fill='%232f6b4f'/><circle cx='46' cy='18' r='7' fill='%239fd3b4'/><text x='10' y='46' font-family='Arial,sans-serif' font-weight='800' font-size='26' fill='white'>Dz</text></svg>">
+<script>window.reelFailed=function(){var f=document.getElementById('reelFallback'),s=document.getElementById('reelSound');if(f)f.hidden=false;if(s)s.hidden=true;};</script>
 <script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -265,7 +266,14 @@ section { padding: 72px 0 0; scroll-margin-top: 12px; }
 .sh h2 { font-size: clamp(28px, 3.6vw, 42px); letter-spacing: -.04em; margin: 0; font-weight: 800; }
 .sh p { margin: 0; color: var(--body); }
 
-.reel { padding: 0; aspect-ratio: 16 / 9; background: #16261e; }
+.reel { padding: 0; aspect-ratio: 16 / 9; background: #0c0c0e; }
+.reel .sound { position: absolute; top: 16px; right: 16px; z-index: 2; border: 0; cursor: pointer; font: 600 14px Manrope, system-ui, sans-serif; padding: 9px 14px; border-radius: 99px; background: rgba(12,12,14,.72); color: #f1ece2; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); transition: opacity .3s, transform .2s; }
+.reel .sound:hover { transform: translateY(-1px); }
+.reel .sound[hidden] { display: none; }
+.reel-fallback { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; gap: 6px; background: #0c0c0e; color: #f1ece2; font-size: 15px; padding: 16px; }
+.reel-fallback[hidden] { display: none; }
+.reel-fallback p { margin: 0; }
+.reel-fallback a { color: #ffd23f; }
 .reel video { display: block; width: 100%; height: 100%; object-fit: cover; }
 .case { cursor: pointer; display: flex; flex-direction: column; min-height: 240px; }
 .case:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
@@ -347,7 +355,7 @@ dialog[open] { animation: pop .35s cubic-bezier(.2,.8,.2,1); }
         <h1>Enterprise-grade software, <span>engineer-led</span> and <span>AI-assisted.</span></h1>
         <p>I'm a senior software engineer with 10+ years building business-critical Java systems at Accenture, IBM and Infor. I take on a small number of side projects, mainly on weekends, and I review and test everything myself before it reaches you.</p>
       </div>
-      <div class="row"><a class="btn cta" data-mail href="#contact">Tell me about your project →</a><a class="btn w" href="#reel">▶ Watch the 30-sec intro</a></div>
+      <div class="row"><a class="btn cta" data-mail href="#contact">Tell me about your project →</a><a class="btn w" href="#reel">▶ Watch the intro</a></div>
     </div>
 
     <div class="t ai s7 r2 tb-12" id="ai" style="--d:.08s">
@@ -386,13 +394,18 @@ dialog[open] { animation: pop .35s cubic-bezier(.2,.8,.2,1); }
   </div>
 
   <section id="reel">
-    <div class="sh"><h2>Dez in 30 seconds</h2><p>A short intro to what I do, animated in code with Remotion.</p></div>
+    <div class="sh"><h2>Watch the intro</h2></div>
     <div class="bento">
       <div class="t reel s12">
-        <video id="reelVideo" poster="media/dez-commercial-poster.jpg" controls muted playsinline loop preload="metadata" aria-label="30-second animated intro to Dez Aguila's services">
-          <source src="media/dez-commercial.mp4" type="video/mp4; codecs=avc1.640028">
-          <source src="media/dez-commercial.webm" type="video/webm; codecs=vp9">
+        <video id="reelVideo" poster="media/dez-commercial-poster.jpg" controls muted playsinline loop preload="metadata" aria-label="36-second animated intro to Dez Aguila's services, with music">
+          <source src="media/dez-commercial.mp4" type='video/mp4; codecs="avc1.640028, mp4a.40.2"'>
+          <source src="media/dez-commercial.webm" type='video/webm; codecs="vp9, opus"' onerror="reelFailed()">
         </video>
+        <button class="sound" id="reelSound" type="button" aria-label="Turn sound on">🔊 Sound on</button>
+        <div class="reel-fallback" id="reelFallback" hidden>
+          <p>This browser couldn't play the video here.</p>
+          <p><a href="media/dez-commercial.mp4">Open the MP4</a> · <a href="media/dez-commercial.webm">Open the WebM</a></p>
+        </div>
       </div>
     </div>
   </section>
@@ -465,6 +478,14 @@ dialog[open] { animation: pop .35s cubic-bezier(.2,.8,.2,1); }
   });
 
   const reel = document.getElementById('reelVideo');
+  const sound = document.getElementById('reelSound');
+  const syncSound = () => { sound.hidden = !reel.muted; };
+  sound.addEventListener('click', () => { reel.muted = false; reel.play().catch(() => {}); syncSound(); });
+  reel.addEventListener('volumechange', syncSound);
+  // If no source can be played (codec or decoder problem), show direct links instead of a black box.
+  // The last <source> calls reelFailed() via an inline handler, so failures during page load aren't missed.
+  reel.addEventListener('error', window.reelFailed);
+  if (reel.networkState === HTMLMediaElement.NETWORK_NO_SOURCE) window.reelFailed();
   if (!reduce && 'IntersectionObserver' in window) {
     new IntersectionObserver(es => es.forEach(e => {
       if (e.isIntersecting) reel.play().catch(() => {}); else reel.pause();

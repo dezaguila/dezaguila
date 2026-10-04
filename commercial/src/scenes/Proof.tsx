@@ -1,39 +1,67 @@
 import React from 'react';
-import { AbsoluteFill, interpolate, useCurrentFrame, useVideoConfig } from 'remotion';
-import { C } from '../theme';
-import { Ambient, Label, pop, Rise, Scene, useUnit } from '../ui';
+import { AbsoluteFill, interpolate, useCurrentFrame } from 'remotion';
+import { K, MONO, SANS, SERIF } from '../brand';
+import { ease, p, Reveal, springAt, useLayout } from '../kit';
 
-const Count: React.FC<{ to: number; at: number; suffix: string; color: string; label: string }> = ({ to, at, suffix, color, label }) => {
+/** Count-up: settles on the final value; the number sharpens as it lands. */
+const Roll: React.FC<{ to: number; at: number; dur: number; size: number; color: string }> = ({ to, at, dur, size, color }) => {
   const f = useCurrentFrame();
-  const { fps } = useVideoConfig();
-  const { u } = useUnit();
-  const p = pop(f, fps, at, 16);
-  const n = Math.round(interpolate(f, [at, at + 36], [0, to], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }));
+  const k = interpolate(f, [at, at + dur], [0, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: ease });
+  const n = Math.round(k * to);
   return (
-    <div style={{ opacity: Math.min(1, p * 1.4), transform: `translateY(${(1 - p) * 60 * u}px)` }}>
-      <div style={{ fontSize: 220 * u, fontWeight: 800, letterSpacing: '-0.06em', lineHeight: 0.9, color }}>{n}{suffix}</div>
-      <div style={{ fontSize: 34 * u, fontWeight: 700, color: C.body, marginTop: 16 * u }}>{label}</div>
+    <div style={{ display: 'flex', fontFamily: SERIF, fontSize: size, lineHeight: 1.05, color, filter: `blur(${(1 - k) * 6}px)`, opacity: f < at ? 0 : 0.3 + 0.7 * k }}>
+      <span style={{ fontVariantNumeric: 'tabular-nums' }}>{n}</span>
+      <span style={{ color: K.signal }}>+</span>
     </div>
   );
 };
 
-export const Proof: React.FC<{ dur: number }> = ({ dur }) => {
-  const { u, vertical } = useUnit();
+const STATIONS = [
+  { x: 0.08, year: '2015', name: 'Accenture' },
+  { x: 0.5, year: '2020', name: 'IBM Consulting' },
+  { x: 0.92, year: '2023', name: 'Infor' },
+];
+
+export const Proof: React.FC = () => {
+  const f = useCurrentFrame();
+  const { u, pad, v, vertical, width } = useLayout();
+  const line = p(f, 62, 104);
+  const trackW = width - pad * 2;
+
   return (
-    <Scene dur={dur} bg={`linear-gradient(150deg, ${C.mint}, ${C.mint2})`}>
-      <Ambient color={C.green} opacity={0.08} />
-      <AbsoluteFill style={{ justifyContent: 'center', padding: vertical ? `0 ${80 * u}px` : `0 ${150 * u}px`, gap: 56 * u }}>
-        <Rise at={0}><Label color={C.green}>Track record</Label></Rise>
-        <div style={{ display: 'flex', flexDirection: vertical ? 'column' : 'row', gap: vertical ? 70 * u : 140 * u }}>
-          <Count to={10} at={6} suffix="+" color={C.green} label="years in enterprise software" />
-          <Count to={10} at={16} suffix="+" color={C.copper} label="apps modernized in one upgrade" />
-        </div>
-        <Rise at={40}>
-          <div style={{ fontSize: 40 * u, fontWeight: 800, letterSpacing: '-0.02em', color: C.ink }}>
-            Accenture <span style={{ color: C.green }}>·</span> IBM Consulting <span style={{ color: C.green }}>·</span> Infor
+    <AbsoluteFill style={{ background: K.ink }}>
+      <div style={{ position: 'absolute', left: pad, top: v(150, 210) * u, fontFamily: MONO, fontSize: v(22, 26) * u, letterSpacing: '0.16em', color: K.dim }}>
+        TRACK RECORD
+      </div>
+      <AbsoluteFill style={{ padding: `0 ${pad}px`, justifyContent: 'center', gap: v(70, 90) * u }}>
+        <div style={{ display: 'flex', flexDirection: vertical ? 'column' : 'row', gap: v(140, 60) * u }}>
+          <div>
+            <Roll to={10} at={2} dur={26} size={v(260, 240) * u} color={K.bone} />
+            <Reveal at={14}><div style={{ fontFamily: SANS, fontSize: v(38, 40) * u, color: K.dim, marginTop: 8 * u }}>years in enterprise software</div></Reveal>
           </div>
-        </Rise>
+          <div style={{ opacity: p(f, 26, 34) }}>
+            <Roll to={10} at={28} dur={26} size={v(260, 240) * u} color={K.bone} />
+            <Reveal at={40}><div style={{ fontFamily: SANS, fontSize: v(38, 40) * u, color: K.dim, marginTop: 8 * u }}>apps modernized in one upgrade</div></Reveal>
+          </div>
+        </div>
+
+        {/* Career track */}
+        <div style={{ position: 'relative', width: trackW, height: 120 * u }}>
+          <div style={{ position: 'absolute', left: 0, top: 87 * u, height: 2 * u, width: trackW * line, background: K.bone, opacity: 0.6 }} />
+          {STATIONS.map((s) => {
+            const reach = springAt(f, 62 + s.x * 42, 12);
+            const left = s.x * trackW;
+            const align = s.x < 0.2 ? 'flex-start' : s.x > 0.8 ? 'flex-end' : 'center';
+            return (
+              <div key={s.name} style={{ position: 'absolute', left: Math.min(left, trackW - 1), top: 0, transform: `translateX(${align === 'center' ? '-50%' : align === 'flex-end' ? '-100%' : '0'})`, display: 'flex', flexDirection: 'column', alignItems: align, opacity: Math.min(1, reach * 1.5) }}>
+                <div style={{ fontFamily: MONO, fontSize: v(22, 22) * u, letterSpacing: '0.14em', color: K.dim, whiteSpace: 'nowrap' }}>{s.year}</div>
+                <div style={{ fontFamily: SANS, fontWeight: 600, fontSize: v(30, 28) * u, color: K.bone, whiteSpace: 'nowrap', marginTop: 2 * u }}>{s.name}</div>
+                <div style={{ width: 18 * u, height: 18 * u, borderRadius: '50%', background: s.name === 'Infor' ? K.signal : K.bone, marginTop: 10 * u, transform: `scale(${reach})` }} />
+              </div>
+            );
+          })}
+        </div>
       </AbsoluteFill>
-    </Scene>
+    </AbsoluteFill>
   );
 };

@@ -1,0 +1,20 @@
+{
+  "_comment": "Single source of truth for timing. Read by the video (src/*.tsx) and the music (music/compose.mjs). 120 BPM: 1 beat = 0.5 s = 15 frames, 1 bar = 2 s = 60 frames.",
+  "fps": 30,
+  "bpm": 120,
+  "bars": 18,
+  "seconds": 36,
+  "typing": { "start": 0.3, "text": "SOUND FAMILIAR?", "framesPerChar": 2 },
+  "hits": [2, 4, 6],
+  "risers": [[6, 8], [30, 32]],
+  "impacts": [8, 32],
+  "scenes": {
+    "problems": [0, 8],
+    "meet": [8, 12],
+    "how": [12, 18],
+    "services": [18, 24],
+    "proof": [24, 28],
+    "weekend": [28, 32],
+    "end": [32, 36]
+  }
+}
