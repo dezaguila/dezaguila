@@ -54,7 +54,7 @@ export const Services: React.FC = () => {
       <AbsoluteFill style={{ flexDirection: vertical ? 'column' : 'row', alignItems: vertical ? 'flex-start' : 'center', justifyContent: vertical ? 'center' : 'space-between', padding: `0 ${pad}px`, gap: 50 * u }}>
         <div style={{ position: 'relative', width: v(1040 * u, width - pad * 2), height: v(460, 470) * u }}>
           {ITEMS.map((it, i) => (
-            <Reveal key={it.t} at={i * STEP - 3} out={i < ITEMS.length - 1 ? (i + 1) * STEP - 8 : undefined} dur={12} style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+            <Reveal key={it.t} at={i * STEP - 3} out={i < ITEMS.length - 1 ? (i + 1) * STEP - 13 : undefined} dur={12} style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
               <div style={{ fontFamily: MONO, fontSize: v(30, 32) * u, color: K.signal, letterSpacing: '0.1em' }}>
                 {String(i + 1).padStart(2, '0')} <span style={{ color: K.dim }}>/ 04</span>
               </div>

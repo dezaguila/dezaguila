@@ -112,7 +112,7 @@ export const How: React.FC = () => {
         {/* Statement */}
         <div style={{ position: 'relative', width: v(880 * u, width - pad * 2), height: v(420, 380) * u }}>
           {PHASES.map((ph, i) => (
-            <Reveal key={ph.n} at={i * STEP - 3} out={(i + 1) * STEP - 8} dur={12} style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+            <Reveal key={ph.n} at={i * STEP - 3} out={(i + 1) * STEP - 13} dur={12} style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
               <div style={{ fontFamily: SERIF, fontSize: v(210, 190) * u, lineHeight: 1.05, color: K.bone }}>
                 <span style={{ color: ph.a === 'AI' ? K.sky : K.signal, fontStyle: 'italic' }}>{ph.a}</span> {ph.b}
               </div>

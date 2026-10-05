@@ -200,8 +200,8 @@ const HowScene: React.FC<{ f: number; L: L }> = ({ f, L }) => {
   );
   return (
     <>
-      {caption('AI does the legwork.', fb(C.carry) - 4, fb(C.approve) - 8)}
-      {caption('I make the calls.', fb(C.approve) - 2, fb(C.highfive) - 8)}
+      {caption('AI does the legwork.', fb(C.carry) - 4, fb(C.approve) - 12)}
+      {caption('I make the calls.', fb(C.approve) - 1, fb(C.highfive) - 11)}
       {caption('Engineer-led. AI-assisted.', fb(C.highfive), undefined, P.white)}
       <div style={{ position: 'absolute', left: 0, right: 0, top: ground, height: 6 * u, background: P.ink, opacity: 0.25 }} />
       <div style={{ position: 'absolute', left: width * v(0.2, 0.12) + five * 40 * u, top: ground - size * 1.3 }}><Dez size={size} lean={five * 12} /></div>
