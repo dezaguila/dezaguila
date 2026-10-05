@@ -1,7 +1,7 @@
 import React from 'react';
 import { AbsoluteFill, useCurrentFrame } from 'remotion';
 import { K, MONO, SANS, SERIF } from '../brand';
-import { p, Reveal, useLayout } from '../kit';
+import { p, Reveal, useLayout } from '../../shared/kit';
 
 const STEP = 45;
 const ITEMS = [

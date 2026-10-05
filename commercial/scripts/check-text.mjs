@@ -5,7 +5,7 @@ import os from 'node:os';
 import { bundle } from '@remotion/bundler';
 import { renderMedia, selectComposition } from '@remotion/renderer';
 
-const ids = process.argv.slice(2).length ? process.argv.slice(2) : ['DezCommercial', 'DezCommercialVertical'];
+const ids = process.argv.slice(2).length ? process.argv.slice(2) : ['Noir', 'NoirVertical', 'Sage', 'SageVertical', 'Pop', 'PopVertical'];
 const browserExecutable = process.env.REMOTION_BROWSER || null;
 const serveUrl = await bundle({ entryPoint: path.resolve('src/index.ts') });
 let failed = false;

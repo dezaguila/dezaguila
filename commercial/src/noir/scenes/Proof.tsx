@@ -1,7 +1,7 @@
 import React from 'react';
 import { AbsoluteFill, interpolate, useCurrentFrame } from 'remotion';
 import { K, MONO, SANS, SERIF } from '../brand';
-import { ease, p, Reveal, springAt, useLayout } from '../kit';
+import { ease, p, Reveal, springAt, useLayout } from '../../shared/kit';
 
 /** Count-up: settles on the final value; the number sharpens as it lands. */
 const Roll: React.FC<{ to: number; at: number; dur: number; size: number; color: string }> = ({ to, at, dur, size, color }) => {

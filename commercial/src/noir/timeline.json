@@ -1,5 +1,5 @@
 {
-  "_comment": "Single source of truth for timing. Read by the video (src/*.tsx) and the music (music/compose.mjs). 120 BPM: 1 beat = 0.5 s = 15 frames, 1 bar = 2 s = 60 frames.",
+  "_comment": "Single source of truth for timing. Read by the video (src/noir) and the music (music/noir.mjs). 120 BPM: 1 beat = 0.5 s = 15 frames, 1 bar = 2 s = 60 frames.",
   "fps": 30,
   "bpm": 120,
   "bars": 18,

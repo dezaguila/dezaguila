@@ -1,7 +1,7 @@
 import React from 'react';
 import { AbsoluteFill, useCurrentFrame } from 'remotion';
 import { K, MONO, SANS, SERIF } from '../brand';
-import { Flash, p, Reveal, springAt, useLayout } from '../kit';
+import { Flash, p, Reveal, springAt, useLayout } from '../../shared/kit';
 
 /** Opens on the 32 s impact; the music rings out to the end. */
 export const End: React.FC = () => {
@@ -34,7 +34,7 @@ export const End: React.FC = () => {
           </div>
         </Reveal>
       </div>
-      <Flash at={0} len={10} />
+      <Flash at={0} len={10} color={K.bone} />
     </AbsoluteFill>
   );
 };

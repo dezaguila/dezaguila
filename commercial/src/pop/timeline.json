@@ -1,0 +1,41 @@
+{
+  "_comment": "Pop timing in BEATS. 128 BPM: 1 beat = 0.46875 s = 14.0625 frames; 64 beats = 16 bars = 30 s. Read by src/pop and music/pop.mjs.",
+  "fps": 30,
+  "bpm": 128,
+  "beats": 64,
+  "seconds": 30,
+  "scenes": {
+    "bug": [0, 8],
+    "upgrade": [8, 16],
+    "idea": [16, 24],
+    "meet": [24, 32],
+    "how": [32, 40],
+    "services": [40, 48],
+    "weekend": [48, 56],
+    "cta": [56, 64]
+  },
+  "cues": {
+    "slam": [0, 1, 2],
+    "bugIn": 2.5,
+    "cursorIn": 4.5,
+    "squash": 6,
+    "fixed": 6.5,
+    "boings": [12, 13, 14],
+    "upgraded": 14.5,
+    "bulb": 18,
+    "parts": [19, 19.5, 20, 20.5, 21, 21.5],
+    "shipped": 22,
+    "letters": 24.5,
+    "badge": 26.5,
+    "chips": [28, 28.5, 29, 29.5],
+    "carry": 33,
+    "approve": 36,
+    "highfive": 38,
+    "flips": [40, 41, 42, 43, 44, 45, 46, 47],
+    "toggle": 50,
+    "stickers": [52, 53],
+    "riser": [54, 56],
+    "ctaClick": 60,
+    "tagline": 61.5
+  }
+}

@@ -1,7 +1,7 @@
 import React from 'react';
 import { AbsoluteFill, useCurrentFrame } from 'remotion';
 import { K, MONO, SANS, SERIF } from '../brand';
-import { easeIn, p, Reveal, useLayout } from '../kit';
+import { easeIn, p, Reveal, useLayout } from '../../shared/kit';
 
 const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { AbsoluteFill, useCurrentFrame } from 'remotion';
 import { BEAT, K, MONO, SANS, SERIF } from '../brand';
-import { Flash, p, Reveal, springAt, useLayout } from '../kit';
+import { Flash, p, Reveal, springAt, useLayout } from '../../shared/kit';
 
 /** Opens on the 8 s impact. Sonar rings pulse on every kick. */
 export const Meet: React.FC = () => {
@@ -45,7 +45,7 @@ export const Meet: React.FC = () => {
           </div>
         </Reveal>
       </div>
-      <Flash at={0} len={9} />
+      <Flash at={0} len={9} color={K.bone} />
     </AbsoluteFill>
   );
 };

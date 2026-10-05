@@ -3,7 +3,8 @@ import {
   AbsoluteFill, cancelRender, continueRender, delayRender, Easing, getInputProps, interpolate,
   spring, staticFile, useCurrentFrame, useVideoConfig,
 } from 'remotion';
-import { K, MONO, SCENE_LABEL, SCENE_ORDER, TL, FPS } from './brand';
+/** Shared animation kit used by every commercial. All compositions run at 30 fps. */
+export const FPS = 30;
 
 export const ease = Easing.bezier(0.16, 1, 0.3, 1);       // fast out, long settle
 export const easeIn = Easing.bezier(0.7, 0, 0.84, 0);
@@ -63,17 +64,17 @@ export const Words: React.FC<{ text: string; at: number; out?: number; stagger?:
 };
 
 /** Full-frame flash used on musical impacts. */
-export const Flash: React.FC<{ at: number; color?: string; len?: number }> = ({ at, color = K.bone, len = 8 }) => {
+export const Flash: React.FC<{ at: number; color: string; len?: number }> = ({ at, color, len = 8 }) => {
   const f = useCurrentFrame();
   const o = f < at ? 0 : 1 - p(f, at, at + len, Easing.out(Easing.quad));
   return o > 0 ? <AbsoluteFill style={{ background: color, opacity: o }} /> : null;
 };
 
 /** Film grain: deterministic, refreshed every other frame (cheaper to encode, more filmic). */
-export const Grain: React.FC = () => {
+export const Grain: React.FC<{ opacity?: number }> = ({ opacity = 0.05 }) => {
   const f = useCurrentFrame();
   return (
-    <AbsoluteFill style={{ pointerEvents: 'none', opacity: 0.05, mixBlendMode: 'screen' }}>
+    <AbsoluteFill style={{ pointerEvents: 'none', opacity, mixBlendMode: 'screen' }}>
       <svg width="100%" height="100%">
         <filter id="g"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed={Math.floor(f / 2) % 12} stitchTiles="stitch" /></filter>
         <rect width="100%" height="100%" filter="url(#g)" />
@@ -82,46 +83,25 @@ export const Grain: React.FC = () => {
   );
 };
 
-/** Corner HUD: name, scene index, timecode and tagline. */
-export const Hud: React.FC<{ opacity?: number }> = ({ opacity = 1 }) => {
-  const f = useCurrentFrame();
-  const { u, pad, vertical } = useLayout();
-  const t = f / FPS;
-  const idx = SCENE_ORDER.findIndex((k) => t >= TL.scenes[k][0] && t < TL.scenes[k][1]);
-  const key = SCENE_ORDER[Math.max(0, idx)];
-  const tc = `00:${String(Math.floor(t)).padStart(2, '0')}:${String(f % FPS).padStart(2, '0')}`;
-  const base: React.CSSProperties = { position: 'absolute', fontFamily: MONO, fontSize: (vertical ? 22 : 17) * u, letterSpacing: '0.14em', textTransform: 'uppercase', color: K.dim, whiteSpace: 'nowrap' };
-  const edge = pad * 0.55;
-  const fadeIn = p(f, 4, 24);
-  return (
-    <AbsoluteFill style={{ opacity: opacity * fadeIn, pointerEvents: 'none' }}>
-      <div style={{ ...base, left: edge, top: edge, color: K.bone }}>Dez Aguila</div>
-      <div style={{ ...base, right: edge, top: edge }}>{String(idx + 1).padStart(2, '0')} / 07 · {SCENE_LABEL[key]}</div>
-      <div style={{ ...base, left: edge, bottom: edge }}>{tc}</div>
-      <div style={{ ...base, right: edge, bottom: edge }}>Engineer-led · AI-assisted</div>
-    </AbsoluteFill>
-  );
-};
+export type FontSpec = { family: string; file: string; descriptors?: FontFaceDescriptors };
 
-/** Loads the bundled fonts before the first frame renders. */
-export const useFonts = () => {
+/** Loads bundled fonts (from public/fonts) before the first frame renders. */
+export const useFonts = (fonts: FontSpec[]) => {
   const [handle] = useState(() => delayRender('Loading fonts'));
   useEffect(() => {
-    const faces = [
-      new FontFace('Instrument Serif', `url(${staticFile('fonts/InstrumentSerif-Regular.woff2')})`, { style: 'normal' }),
-      new FontFace('Instrument Serif', `url(${staticFile('fonts/InstrumentSerif-Italic.woff2')})`, { style: 'italic' }),
-      new FontFace('Space Grotesk', `url(${staticFile('fonts/SpaceGrotesk.woff2')})`, { weight: '300 700' }),
-      new FontFace('JetBrains Mono', `url(${staticFile('fonts/JetBrainsMono.woff2')})`, { weight: '100 800' }),
-    ];
+    const faces = fonts.map((ft) => new FontFace(ft.family, `url(${staticFile(`fonts/${ft.file}`)})`, ft.descriptors));
     Promise.all(faces.map((ff) => ff.load()))
       .then((loaded) => { loaded.forEach((ff) => document.fonts.add(ff)); continueRender(handle); })
       .catch((e) => cancelRender(e));
+    // fonts is a static list per commercial
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [handle]);
 };
 
 /**
  * QA mode (inputProps.check = true): after each frame paints, measures every visible text run and
  * logs any that are cut off by an ancestor with overflow clipping or that fall outside the frame.
+ * Elements marked data-check-region="idle" (e.g. tiles the camera isn't resting on) skip the frame check.
  */
 export const TextCheck: React.FC = () => {
   const f = useCurrentFrame();
@@ -147,7 +127,10 @@ export const TextCheck: React.FC = () => {
         const range = document.createRange(); range.selectNodeContents(n);
         for (const r of Array.from(range.getClientRects())) {
           if (r.width < 1 || r.height < 1) continue;
-          if (r.left < -margin || r.top < -margin || r.right > width + margin || r.bottom > height + margin)
+          // With a moving camera, only text in a region the camera is resting on must be fully in frame.
+          const region = el.closest('[data-check-region]');
+          const frameMatters = !region || region.getAttribute('data-check-region') === 'active';
+          if (frameMatters && (r.left < -margin || r.top < -margin || r.right > width + margin || r.bottom > height + margin))
             issues.push(`OFF-FRAME "${txt.slice(0, 40)}" [${r.left | 0},${r.top | 0},${r.right | 0},${r.bottom | 0}]`);
           for (let a: HTMLElement | null = el; a; a = a.parentElement) { // include the text's own box
             const cs = getComputedStyle(a);

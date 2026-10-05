@@ -1,0 +1,21 @@
+{
+  "_comment": "Sage timing in frames (30 fps). 100 BPM: 1 beat = 18 frames, 1 bar = 72 frames. Read by src/sage and music/sage.mjs.",
+  "fps": 30,
+  "bpm": 100,
+  "bars": 13,
+  "frames": 936,
+  "move": 16,
+  "shots": [
+    { "focus": ["A"], "at": 0 },
+    { "focus": ["B"], "at": 144 },
+    { "focus": ["C"], "at": 288 },
+    { "focus": ["D"], "at": 468 },
+    { "focus": ["E", "F"], "at": 612 },
+    { "focus": ["G"], "at": 720 },
+    { "focus": ["*"], "at": 792 },
+    { "focus": ["H"], "at": 864 }
+  ],
+  "builds": { "A": 4, "B": 134, "C": 278, "D": 458, "D1": 476, "D2": 494, "D3": 512, "D4": 530, "E": 602, "F": 626, "G": 710, "H": 810 },
+  "how": { "plan": 312, "assist": 348, "deliver": 384, "line": 420 },
+  "lit": 744
+}

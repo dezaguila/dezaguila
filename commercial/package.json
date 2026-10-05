@@ -2,14 +2,14 @@
   "name": "dez-commercial",
   "version": "1.0.0",
   "private": true,
-  "description": "Product-style commercial for Dez Aguila's portfolio, built with Remotion",
+  "description": "Three short commercials for Dez Aguila's portfolio (Noir, Sage, Pop), built with Remotion",
   "scripts": {
-    "music": "node music/compose.mjs",
+    "music": "node music/noir.mjs && node music/sage.mjs && node music/pop.mjs",
     "studio": "npm run music && remotion studio",
-    "render": "npm run music && remotion render DezCommercial out/dez-commercial-raw.mp4 --crf=18 && npm run finish",
-    "finish": "ffmpeg -y -loglevel error -i out/dez-commercial-raw.mp4 -c:v libx264 -crf 25 -preset slow -profile:v high -level:v 4.0 -pix_fmt yuv420p -color_range tv -c:a aac -b:a 160k -movflags +faststart ../docs/media/dez-commercial.mp4 && ffmpeg -y -loglevel error -i out/dez-commercial-raw.mp4 -c:v libvpx-vp9 -b:v 0 -crf 36 -row-mt 1 -deadline good -cpu-used 2 -pix_fmt yuv420p -c:a libopus -b:a 128k ../docs/media/dez-commercial.webm",
-    "poster": "remotion still DezCommercial ../docs/media/dez-commercial-poster.jpg --frame=300 --image-format=jpeg",
-    "render:vertical": "npm run music && remotion render DezCommercialVertical out/dez-commercial-vertical-raw.mp4 --crf=18 && ffmpeg -y -loglevel error -i out/dez-commercial-vertical-raw.mp4 -c:v libx264 -crf 25 -preset slow -profile:v high -level:v 4.0 -pix_fmt yuv420p -c:a aac -b:a 160k -movflags +faststart out/dez-commercial-vertical.mp4",
+    "render": "node scripts/render.mjs",
+    "render:vertical": "node scripts/render.mjs --vertical",
+    "publish": "node scripts/render.mjs Noir --publish",
+    "stills": "node scripts/stills.mjs",
     "check": "node scripts/check-text.mjs"
   },
   "dependencies": {

@@ -1,7 +1,7 @@
 import React from 'react';
-import { AbsoluteFill, Audio, Sequence, staticFile, useCurrentFrame } from 'remotion';
-import { K, sec, TL, TOTAL } from './brand';
-import { Grain, Hud, p, TextCheck, useFonts } from './kit';
+import { AbsoluteFill, Audio, Sequence, staticFile } from 'remotion';
+import { FONTS, K, sec, TL } from './brand';
+import { Grain, TextCheck, useFonts } from '../shared/kit';
 import { Problems } from './scenes/Problems';
 import { Meet } from './scenes/Meet';
 import { How } from './scenes/How';
@@ -15,11 +15,9 @@ const SCENES = [
   ['proof', Proof], ['weekend', Weekend], ['end', End],
 ] as const;
 
-export const Commercial: React.FC = () => {
-  useFonts();
-  const f = useCurrentFrame();
-  // Hard cuts on downbeats; the HUD steps back during the finale.
-  const hud = 1 - p(f, TOTAL - 40, TOTAL - 20);
+/** Noir: cinematic kinetic type on black. Hard cuts on downbeats. */
+export const Noir: React.FC = () => {
+  useFonts(FONTS);
   return (
     <AbsoluteFill style={{ background: K.ink }}>
       {SCENES.map(([key, Scene]) => {
@@ -30,9 +28,8 @@ export const Commercial: React.FC = () => {
           </Sequence>
         );
       })}
-      <Hud opacity={hud} />
       <Grain />
-      <Audio src={staticFile('music/theme.wav')} />
+      <Audio src={staticFile('music/noir.wav')} />
       <TextCheck />
     </AbsoluteFill>
   );

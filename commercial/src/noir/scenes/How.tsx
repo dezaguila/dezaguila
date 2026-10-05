@@ -1,7 +1,7 @@
 import React from 'react';
 import { AbsoluteFill, useCurrentFrame } from 'remotion';
 import { K, MONO, SANS, SERIF } from '../brand';
-import { p, Reveal, useLayout } from '../kit';
+import { p, Reveal, useLayout } from '../../shared/kit';
 
 // 45 frames (3 beats) per step: plan, assist, deliver; then the closing line.
 const STEP = 45;

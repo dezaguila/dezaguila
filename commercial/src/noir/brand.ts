@@ -1,4 +1,4 @@
-// Visual identity for the commercial. Deliberately different from the portfolio site:
+// Noir: visual identity. Deliberately different from the portfolio site:
 // cinematic black, bone white and a signal-yellow accent, with a serif / grotesk / mono type system.
 import timeline from './timeline.json';
 
@@ -23,9 +23,9 @@ export const SERIF = '"Instrument Serif", Georgia, serif';
 export const SANS = '"Space Grotesk", system-ui, sans-serif';
 export const MONO = '"JetBrains Mono", ui-monospace, monospace';
 
-export type SceneKey = keyof typeof TL.scenes;
-export const SCENE_ORDER: SceneKey[] = ['problems', 'meet', 'how', 'services', 'proof', 'weekend', 'end'];
-export const SCENE_LABEL: Record<SceneKey, string> = {
-  problems: 'The problem', meet: 'Meet Dez', how: 'How I work', services: 'What I do',
-  proof: 'Track record', weekend: 'Availability', end: 'Get in touch',
-};
+export const FONTS = [
+  { family: 'Instrument Serif', file: 'InstrumentSerif-Regular.woff2', descriptors: { style: 'normal' } },
+  { family: 'Instrument Serif', file: 'InstrumentSerif-Italic.woff2', descriptors: { style: 'italic' } },
+  { family: 'Space Grotesk', file: 'SpaceGrotesk.woff2', descriptors: { weight: '300 700' } },
+  { family: 'JetBrains Mono', file: 'JetBrainsMono.woff2', descriptors: { weight: '100 800' } },
+];

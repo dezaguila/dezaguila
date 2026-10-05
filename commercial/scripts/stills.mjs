@@ -3,7 +3,7 @@ import path from 'node:path';
 import { bundle } from '@remotion/bundler';
 import { renderStill, selectComposition } from '@remotion/renderer';
 
-const [id = 'DezCommercial', list = '0', scale = '0.5'] = process.argv.slice(2);
+const [id = 'Noir', list = '0', scale = '0.5'] = process.argv.slice(2);
 const browserExecutable = process.env.REMOTION_BROWSER || null;
 const serveUrl = await bundle({ entryPoint: path.resolve('src/index.ts') });
 const composition = await selectComposition({ serveUrl, id, browserExecutable });

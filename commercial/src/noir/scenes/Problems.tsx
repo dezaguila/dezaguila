@@ -1,7 +1,7 @@
 import React from 'react';
 import { AbsoluteFill, useCurrentFrame } from 'remotion';
 import { K, MONO, SERIF, sec, TL } from '../brand';
-import { p, easeIn, useLayout, Words } from '../kit';
+import { p, easeIn, useLayout, Words } from '../../shared/kit';
 
 const LINES = [
   { text: 'A bug nobody can reproduce.', key: 'reproduce.' },
